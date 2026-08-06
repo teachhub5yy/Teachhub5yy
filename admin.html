@@ -563,6 +563,11 @@ window.openChat = function(docId, userName) {
         .on('child_removed', (snapshot) => {
             removeMessageFromUI(snapshot.key);
         });
+
+    db.ref('chats/' + docId + '/messages')
+        .on('child_changed', (snapshot) => {
+            updateMessageTick(snapshot.key, snapshot.val());
+        });
 };
 
 // ==========================================
@@ -571,6 +576,21 @@ window.openChat = function(docId, userName) {
 function removeMessageFromUI(msgId) {
     const el = document.getElementById('msg-' + msgId);
     if (el) el.remove();
+}
+
+function updateMessageTick(msgId, data) {
+    if (!data || data.sender !== 'admin') return;
+    const el = document.getElementById('msg-' + msgId);
+    if (!el) return;
+    let tickHtml = '';
+    if (data.status === 'sent') tickHtml = '<span class="tick sent">✓</span>';
+    else if (data.status === 'delivered') tickHtml = '<span class="tick delivered">✓✓</span>';
+    else if (data.status === 'read') tickHtml = '<span class="tick read">✓✓</span>';
+    const meta = el.querySelector('.msg-meta');
+    if (meta) {
+        const timeSpan = meta.querySelector('span');
+        meta.innerHTML = (timeSpan ? timeSpan.outerHTML : '') + ' ' + tickHtml;
+    }
 }
 
 function renderMessage(msgId, data) {
