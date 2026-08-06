@@ -4,12 +4,12 @@
 
 const CACHE_NAME = 'teachhub-v2';
 const urlsToCache = [
-    '/Teachhub67y/',
-    '/Teachhub67y/index.html',
-    '/Teachhub67y/admin.html',
-    '/Teachhub67y/logo-192.png',
-    '/Teachhub67y/logo-512.png',
-    '/Teachhub67y/manifest.json'
+    '/Teachhub5yy/',
+    '/Teachhub5yy/index.html',
+    '/Teachhub5yy/admin.html',
+    '/Teachhub5yy/logo-192.png',
+    '/Teachhub5yy/logo-512.png',
+    '/Teachhub5yy/manifest.json'
 ];
 
 // ==========================================
@@ -64,8 +64,8 @@ self.addEventListener('push', (event) => {
     let data = {
         title: 'Teach Hub',
         body: 'You have a new message',
-        icon: '/Teachhub67y/logo-192.png',
-        badge: '/Teachhub67y/logo-192.png'
+        icon: '/Teachhub5yy/logo-192.png',
+        badge: '/Teachhub5yy/logo-192.png'
     };
 
     try {
@@ -86,7 +86,7 @@ self.addEventListener('push', (event) => {
         vibrate: [200, 100, 200],
         data: {
             chatId: data.chatId,
-            url: '/Teachhub67y/'
+            url: '/Teachhub5yy/'
         },
         actions: [
             {
@@ -120,12 +120,12 @@ self.addEventListener('notificationclick', (event) => {
                 .then((clientList) => {
                     for (let i = 0; i < clientList.length; i++) {
                         const client = clientList[i];
-                        if (client.url.includes('/Teachhub67y/') && 'focus' in client) {
+                        if (client.url.includes('/Teachhub5yy/') && 'focus' in client) {
                             return client.focus();
                         }
                     }
                     if (clients.openWindow) {
-                        return clients.openWindow('/Teachhub67y/');
+                        return clients.openWindow('/Teachhub5yy/');
                     }
                 })
         );
