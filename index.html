@@ -316,6 +316,9 @@ function loadMessages() {
         .on('child_added', (snapshot) => {
             const data = snapshot.val();
             if (!data) return;
+            if (data.sender === 'admin' && data.status !== 'read') {
+                db.ref('chats/' + myChatDocId + '/messages/' + snapshot.key + '/status').set('read');
+            }
             if (document.getElementById('msg-' + snapshot.key)) return; // already drawn optimistically
             renderMessage(snapshot.key, data);
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -524,6 +527,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // 🔥 START
 // ==========================================
 console.log('✅ Student app started, connecting...');
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/Teachhub5yy/sw.js')
+            .then(reg => console.log('✅ Service worker registered', reg))
+            .catch(err => console.log('❌ SW registration failed', err));
+    });
+}
 </script>
 </body>
 </html>
