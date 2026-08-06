@@ -1,1 +1,745 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teach Hub - Admin Panel</title>
+    <link rel="icon" href="logo-192.png" type="image/png">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #eef2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .chat-container { width: 100%; max-width: 450px; height: 100vh; background: #f5f7f8; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.15); overflow: hidden; }
+
+        /* LOGIN SCREEN */
+        #login-view { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; background: #1B4F72; padding: 30px; }
+        #login-view h2 { color: white; margin-bottom: 24px; font-size: 20px; }
+        #login-view input { width: 100%; padding: 12px 14px; margin-bottom: 12px; border: none; border-radius: 8px; font-size: 15px; outline: none; }
+        #login-view button { width: 100%; padding: 12px; background: #F4B400; color: #1B4F72; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 6px; }
+        #login-error { color: #ffb3b3; font-size: 13px; margin-top: 10px; text-align: center; min-height: 16px; }
+
+        #inbox-view { display: none; flex-direction: column; height: 100%; background: #ffffff; }
+        .inbox-header { background: #1B4F72; color: white; padding: 16px; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .inbox-header img { width: 26px; height: 26px; }
+        .inbox-header .header-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+        .inbox-header .header-actions button { padding: 5px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-delete-selected { background: #e53935; color: white; }
+        .btn-delete-selected:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-delete-all { background: #c62828; color: white; }
+        .btn-logout { background: #6b7a85; color: white; }
+
+        .user-list { flex: 1; overflow-y: auto; padding: 8px 0; background: #ffffff; }
+        .user-item { display: flex; flex-direction: column; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; position: relative; }
+        .user-item:hover { background: #f5f6f6; }
+        .user-item.selected { background: #e3f2fd; border-left: 4px solid #1B84D8; }
+
+        .user-clickable-area { display: flex; align-items: center; gap: 15px; width: 100%; cursor: pointer; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #1B4F72; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; }
+        .user-details { flex: 1; min-width: 0; }
+        .user-phone { font-size: 15px; font-weight: 600; color: #16232e; }
+        .user-subtitle { font-size: 12px; color: #6b7a85; margin-top: 2px; }
+
+        .status-container { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e1e1e1; flex-wrap: wrap; }
+        .status-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 12px; color: white; background-color: #8696a0; }
+        .status-tag.pending { background-color: #e53935; }
+        .status-tag.plan1 { background-color: #1e88e5; }
+        .status-tag.plan2 { background-color: #8e24aa; }
+        .status-tag.completed { background-color: #43a047; }
+        .status-tag.custom { background-color: #f4511e; }
+
+        .status-selector { font-size: 12px; padding: 3px 6px; border-radius: 4px; border: 1px solid #ccc; outline: none; background: #fff; cursor: pointer; }
+        .remove-status-btn { font-size: 11px; padding: 3px 6px; background: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .unread-badge { background-color: #1B84D8; color: white; font-size: 11px; font-weight: bold; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+        .delete-user-btn { font-size: 12px; padding: 4px 10px; background: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .delete-user-btn:hover { background: #b71c1c; }
+
+        .select-checkbox { width: 20px; height: 20px; cursor: pointer; flex-shrink: 0; }
+
+        #chat-view { display: none; flex-direction: column; height: 100%; }
+        .chat-header { background: #123a56; color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+        .profile-img { width: 40px; height: 40px; border-radius: 12px; background: #ffffff; object-fit: contain; padding: 3px; }
+        .header-info { flex: 1; }
+        .header-info .name { font-size: 16px; font-weight: 600; }
+        .header-info .status { font-size: 12px; color: #a9c6dd; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background-color: #eef2f5; }
+
+        .msg { max-width: 80%; padding: 6px 7px 6px 9px; border-radius: 8px; font-size: 14.5px; line-height: 1.4; word-wrap: break-word; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 5px; }
+        .msg.sent-by-me { background: #d6e8f5; align-self: flex-end; border-top-right-radius: 0; color: #16232e; }
+        .msg.received-by-me { background: #ffffff; align-self: flex-start; border-top-left-radius: 0; color: #16232e; }
+        .msg img { max-width: 100%; max-height: 200px; border-radius: 6px; display: block; object-fit: contain; cursor: pointer; }
+        .msg video { max-width: 100%; max-height: 200px; border-radius: 6px; display: block; cursor: pointer; }
+        .msg audio { max-width: 100%; display: block; outline: none; }
+        .msg-meta { align-self: flex-end; display: inline-flex; align-items: center; gap: 3px; font-size: 10px; color: #6b7a85; user-select: none; }
+
+        .tick { display: inline-block; font-weight: bold; font-size: 12px; margin-left: 2px; }
+        .tick.sent { color: #8696a0; }
+        .tick.delivered { color: #8696a0; }
+        .tick.read { color: #1B84D8; }
+
+        .chat-input-area { padding: 10px; background: #e4e9ec; display: flex; align-items: center; gap: 8px; }
+        .input-container { flex: 1; background: #fff; border-radius: 24px; display: flex; align-items: center; padding: 2px 12px; }
+        .input-container input[type="text"] { flex: 1; border: none; outline: none; padding: 10px 4px; font-size: 15px; background: transparent; }
+        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #54656f; display: flex; align-items: center; justify-content: center; }
+        .icon-btn.recording { color: #ea0038; animation: blink 1s infinite; }
+        .send-btn { background: #1B4F72; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .media-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 2000; align-items: center; justify-content: center; padding: 16px; }
+        .media-lightbox img, .media-lightbox video { max-width: 100%; max-height: 100%; border-radius: 6px; }
+        .media-lightbox-close { position: absolute; top: 16px; right: 16px; color: #fff; font-size: 30px; background: none; border: none; cursor: pointer; line-height: 1; }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-view">
+        <h2>🔒 Teach Hub Admin Login</h2>
+        <input type="email" id="loginEmail" placeholder="Admin email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <div id="login-error"></div>
+    </div>
+
+    <div id="inbox-view">
+        <div class="inbox-header">
+            <img src="logo-192.png" alt="Teach Hub">
+            <span>Teach Hub - Staff Inbox</span>
+            <div class="header-actions">
+                <button class="btn-delete-selected" id="deleteSelectedBtn" disabled onclick="deleteSelectedUsers()">
+                    🗑 Delete Selected
+                </button>
+                <button class="btn-delete-all" onclick="deleteAllUsers()">
+                    🗑 Delete All
+                </button>
+                <button class="btn-logout" onclick="firebase.auth().signOut()">
+                    Logout
+                </button>
+            </div>
+        </div>
+        <div class="user-list" id="userList"></div>
+    </div>
+
+    <div id="chat-view">
+        <div class="chat-header">
+            <button class="back-btn" onclick="goBackToInbox()">←</button>
+            <img class="profile-img" src="logo-192.png" alt="Profile">
+            <div class="header-info">
+                <div class="name" id="chatTitle">Support Panel</div>
+                <div class="status">active chat session</div>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatBox"></div>
+        <div class="chat-input-area">
+            <div class="input-container">
+                <input type="file" id="mediaInput" accept="image/*,video/*,audio/*" style="display: none;">
+                <button class="icon-btn" onclick="document.getElementById('mediaInput').click()" style="margin-right: 8px;">📎</button>
+                <input type="text" id="msgInput" placeholder="Reply to student...">
+                <button class="icon-btn" id="voiceBtn">🎙️</button>
+            </div>
+            <button class="send-btn" id="sendBtn">➤</button>
+        </div>
+    </div>
+</div>
+
+<div class="media-lightbox" id="mediaLightbox">
+    <button class="media-lightbox-close" id="mediaLightboxCloseBtn">✕</button>
+    <div id="mediaLightboxContent"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+
+<script>
+// ==========================================
+// 🔥 FIREBASE CONFIG - REALTIME DATABASE (NEW PROJECT: Newweb)
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyBp47ofYiIcS5wtuXe6b6gw0Ru1kQbEFKI",
+    authDomain: "newweb-30ac6.firebaseapp.com",
+    databaseURL: "https://newweb-30ac6-default-rtdb.firebaseio.com",
+    projectId: "newweb-30ac6",
+    storageBucket: "newweb-30ac6.firebasestorage.app",
+    messagingSenderId: "537047547834",
+    appId: "1:537047547834:web:b7d560b6e0c89e70d16783",
+    measurementId: "G-Y3H8F9590E"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const auth = firebase.auth();
+
+// ==========================================
+// 🔥 CONFIG: chat message limit + inactivity auto-delete
+// ==========================================
+const MAX_MESSAGES_PER_CHAT = 30;
+const INACTIVITY_LIMIT_MS = 48 * 60 * 60 * 1000; // 48 hours
+
+// Keeps only the latest MAX_MESSAGES_PER_CHAT messages in a chat.
+// Runs after every message is sent (by admin or student).
+async function trimMessages(chatId, maxCount) {
+    try {
+        const snap = await db.ref('chats/' + chatId + '/messages').once('value');
+        const total = snap.numChildren();
+        if (total > maxCount) {
+            const excess = total - maxCount;
+            const oldestSnap = await db.ref('chats/' + chatId + '/messages')
+                .orderByChild('time_now')
+                .limitToFirst(excess)
+                .once('value');
+            const updates = {};
+            oldestSnap.forEach(child => { updates[child.key] = null; });
+            await db.ref('chats/' + chatId + '/messages').update(updates);
+        }
+    } catch (e) {
+        console.error('trimMessages error:', e);
+    }
+}
+
+// Deletes any chat whose lastUpdated is older than INACTIVITY_LIMIT_MS.
+// Runs once on login, then every 5 minutes while the admin panel stays open.
+async function checkStaleUsers() {
+    try {
+        const snap = await db.ref('chats').once('value');
+        const chats = snap.val();
+        if (!chats) return;
+        const now = Date.now();
+        for (const [docId, docData] of Object.entries(chats)) {
+            const last = docData.lastUpdated || 0;
+            if (now - last > INACTIVITY_LIMIT_MS) {
+                await deleteUserCompletely(docId, getUserFriendlyName(docId));
+            }
+        }
+    } catch (e) {
+        console.error('checkStaleUsers error:', e);
+    }
+}
+
+// ==========================================
+// 🔥 AUTH GATE
+// ==========================================
+const loginView = document.getElementById('login-view');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('login-error');
+
+loginBtn.addEventListener('click', () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    loginError.textContent = '';
+    if (!email || !password) {
+        loginError.textContent = 'Enter email and password.';
+        return;
+    }
+    auth.signInWithEmailAndPassword(email, password)
+        .catch((err) => {
+            loginError.textContent = 'Login failed: ' + err.message;
+        });
+});
+
+document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') loginBtn.click();
+});
+
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        loginView.style.display = 'none';
+        inboxView.style.display = 'flex';
+        loadInbox();
+        checkStaleUsers();
+        setInterval(checkStaleUsers, 5 * 60 * 1000);
+    } else {
+        loginView.style.display = 'flex';
+        inboxView.style.display = 'none';
+        chatView.style.display = 'none';
+    }
+});
+
+// ==========================================
+// 🔥 IMGBB API KEY
+// ==========================================
+const IMG_BB_KEY = 'c10f07a29b678cda424ef81b2e5f2302';
+
+// ==========================================
+// 🔥 VARIABLES
+// ==========================================
+const inboxView = document.getElementById('inbox-view');
+const chatView = document.getElementById('chat-view');
+const userListDiv = document.getElementById('userList');
+const chatTitle = document.getElementById('chatTitle');
+const chatBox = document.getElementById('chatBox');
+const msgInput = document.getElementById('msgInput');
+const sendBtn = document.getElementById('sendBtn');
+const mediaInput = document.getElementById('mediaInput');
+const voiceBtn = document.getElementById('voiceBtn');
+const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+
+let activeDocId = "";
+let activeChatListener = null;
+let mediaRecorder, audioChunks = [], isRecording = false;
+let selectedUsers = new Set();
+
+// ==========================================
+// 🔥 USER NAME GENERATOR
+// ==========================================
+function getUserFriendlyName(docId) {
+    let savedNames = localStorage.getItem('chatUserNames');
+    savedNames = savedNames ? JSON.parse(savedNames) : {};
+    if (savedNames[docId]) return savedNames[docId];
+    
+    const assignedNumbers = Object.values(savedNames).map(name => parseInt(name.replace("Student ", "")) || 0);
+    const nextNumber = assignedNumbers.length > 0 ? Math.max(...assignedNumbers) + 1 : 1;
+    const newName = "Student " + nextNumber;
+    savedNames[docId] = newName;
+    localStorage.setItem('chatUserNames', JSON.stringify(savedNames));
+    return newName;
+}
+
+// ==========================================
+// 🔥 UPLOAD TO IMGBB
+// ==========================================
+async function uploadToImgBB(file) {
+    const formData = new FormData();
+    formData.append('image', file);
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMG_BB_KEY}`, {
+        method: 'POST',
+        body: formData
+    });
+    const data = await res.json();
+    return data.success ? data.data.url : null;
+}
+
+// ==========================================
+// 🔥 TO BASE64
+// ==========================================
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
+// ==========================================
+// 🔥 DELETE USER
+// ==========================================
+async function deleteUserCompletely(docId, userName) {
+    try {
+        await db.ref('chats/' + docId + '/messages').remove();
+        await db.ref('chats/' + docId).remove();
+        
+        let savedNames = localStorage.getItem('chatUserNames');
+        if (savedNames) {
+            savedNames = JSON.parse(savedNames);
+            delete savedNames[docId];
+            localStorage.setItem('chatUserNames', JSON.stringify(savedNames));
+        }
+        return true;
+    } catch (error) {
+        console.error("Error:", error);
+        return false;
+    }
+}
+
+// ==========================================
+// 🔥 DELETE ALL
+// ==========================================
+async function deleteAllUsers() {
+    if (!confirm('⚠️ Delete ALL users and ALL messages?')) return;
+    try {
+        await db.ref('chats').remove();
+        localStorage.removeItem('chatUserNames');
+        alert('✅ All deleted!');
+        loadInbox();
+    } catch (error) {
+        alert('❌ Error: ' + error.message);
+    }
+}
+
+// ==========================================
+// 🔥 SELECT/DESELECT
+// ==========================================
+function toggleUserSelection(docId, checkbox) {
+    if (checkbox.checked) {
+        selectedUsers.add(docId);
+        document.getElementById(`user-item-${docId}`)?.classList.add('selected');
+    } else {
+        selectedUsers.delete(docId);
+        document.getElementById(`user-item-${docId}`)?.classList.remove('selected');
+    }
+    deleteSelectedBtn.disabled = selectedUsers.size === 0;
+    deleteSelectedBtn.textContent = selectedUsers.size > 0 ? `🗑 Delete Selected (${selectedUsers.size})` : '🗑 Delete Selected';
+}
+
+// ==========================================
+// 🔥 DELETE SELECTED
+// ==========================================
+async function deleteSelectedUsers() {
+    if (selectedUsers.size === 0) return;
+    if (!confirm(`Delete ${selectedUsers.size} user(s)?`)) return;
+    
+    deleteSelectedBtn.disabled = true;
+    deleteSelectedBtn.textContent = '⏳ Deleting...';
+    
+    let deleted = 0;
+    const toDelete = [...selectedUsers];
+    for (const docId of toDelete) {
+        const userName = getUserFriendlyName(docId);
+        const success = await deleteUserCompletely(docId, userName);
+        if (success) deleted++;
+    }
+    
+    selectedUsers.clear();
+    deleteSelectedBtn.disabled = true;
+    deleteSelectedBtn.textContent = '🗑 Delete Selected';
+    alert(`✅ ${deleted} user(s) deleted!`);
+    loadInbox();
+}
+
+// ==========================================
+// 🔥 STATUS
+// ==========================================
+async function updateCustomerStatus(docId, newStatus) {
+    try {
+        await db.ref('chats/' + docId + '/statusTag').set(newStatus);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+window.handleStatusChange = function(selectElement, docId) {
+    const val = selectElement.value;
+    if (val === 'custom') {
+        const customVal = prompt("Enter Custom Status:");
+        if (customVal && customVal.trim() !== "") updateCustomerStatus(docId, customVal.trim());
+        else selectElement.value = "";
+    } else {
+        updateCustomerStatus(docId, val);
+    }
+};
+
+window.removeStatus = function(docId) {
+    if (confirm("Remove status?")) updateCustomerStatus(docId, "");
+};
+
+window.deleteUser = async function(docId, userName) {
+    if (!confirm(`Delete "${userName}"?`)) return;
+    await deleteUserCompletely(docId, userName);
+    if (activeDocId === docId) goBackToInbox();
+    alert(`✅ Deleted "${userName}"`);
+    loadInbox();
+};
+
+// ==========================================
+// 🔥 LOAD INBOX
+// ==========================================
+function loadInbox() {
+    inboxView.style.display = 'flex';
+    chatView.style.display = 'none';
+    
+    if (activeChatListener) { 
+        if (activeDocId) {
+            db.ref('chats/' + activeDocId + '/messages').off();
+        }
+        activeChatListener = null; 
+    }
+    
+    selectedUsers.clear();
+    deleteSelectedBtn.disabled = true;
+    deleteSelectedBtn.textContent = '🗑 Delete Selected';
+
+    userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>⏳ Loading users...</div>";
+
+    db.ref('chats').on('value', (snapshot) => {
+        const chats = snapshot.val();
+        
+        if (!chats) {
+            userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>📭 No users yet. Share your link!</div>";
+            return;
+        }
+
+        const sortedChats = Object.entries(chats).sort((a, b) => {
+            return (b[1].lastUpdated || 0) - (a[1].lastUpdated || 0);
+        });
+
+        userListDiv.innerHTML = "";
+
+        for (const [docId, docData] of sortedChats) {
+            const userName = getUserFriendlyName(docId);
+            const activeStatus = docData.statusTag || "";
+
+            let tagClass = "status-tag";
+            if (activeStatus.toLowerCase() === "payment pending") tagClass += " pending";
+            else if (activeStatus.toLowerCase() === "plan 1") tagClass += " plan1";
+            else if (activeStatus.toLowerCase() === "plan 2") tagClass += " plan2";
+            else if (activeStatus.toLowerCase() === "completed") tagClass += " completed";
+            else if (activeStatus !== "") tagClass += " custom";
+
+            const isSelected = selectedUsers.has(docId);
+
+            let msgCount = 0;
+            let unreadCount = 0;
+            if (docData.messages) {
+                const msgKeys = Object.keys(docData.messages);
+                msgCount = msgKeys.length;
+                for (const [msgId, msg] of Object.entries(docData.messages)) {
+                    if (msg.sender === 'user' && msg.status !== 'read') {
+                        unreadCount++;
+                    }
+                }
+            }
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = `user-item ${isSelected ? 'selected' : ''}`;
+            itemDiv.id = `user-item-${docId}`;
+            
+            itemDiv.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;width:100%;">
+                    <input type="checkbox" class="select-checkbox" id="checkbox-${docId}" 
+                           onchange="toggleUserSelection('${docId}', this)" 
+                           ${isSelected ? 'checked' : ''}>
+                    <div class="user-clickable-area" onclick="window.openChat('${docId}', '${userName}')">
+                        <div class="user-avatar">🎓</div>
+                        <div class="user-details">
+                            <div class="user-phone">${userName}</div>
+                            <div class="user-subtitle">ID: ${docId.substring(0, 12)}... | Msgs: ${msgCount}</div>
+                        </div>
+                        ${unreadCount > 0 ? `<div class="unread-badge">${unreadCount}</div>` : ''}
+                    </div>
+                </div>
+                <div class="status-container">
+                    ${activeStatus ? `<span class="${tagClass}">${activeStatus}</span>` : '<span style="font-size:11px;color:#aaa;">No tag</span>'}
+                    <select class="status-selector" onchange="handleStatusChange(this, '${docId}')" onclick="event.stopPropagation()">
+                        <option value="" disabled selected>Assign status...</option>
+                        <option value="Payment Pending">Payment Pending</option>
+                        <option value="Plan 1">Plan 1</option>
+                        <option value="Plan 2">Plan 2</option>
+                        <option value="Completed">Completed</option>
+                        <option value="custom">✍️ Custom Status...</option>
+                    </select>
+                    ${activeStatus ? `<button class="remove-status-btn" onclick="event.stopPropagation(); removeStatus('${docId}')">✕ Remove</button>` : ''}
+                    <button class="delete-user-btn" onclick="event.stopPropagation(); window.deleteUser('${docId}', '${userName}')">🗑 Delete</button>
+                </div>
+            `;
+            userListDiv.appendChild(itemDiv);
+        }
+    });
+}
+
+// ==========================================
+// 🔥 GO BACK
+// ==========================================
+window.goBackToInbox = function() { loadInbox(); };
+
+// ==========================================
+// 🔥 OPEN CHAT
+// ==========================================
+window.openChat = function(docId, userName) {
+    activeDocId = docId;
+    inboxView.style.display = 'none';
+    chatView.style.display = 'flex';
+    chatTitle.innerText = userName;
+    chatBox.innerHTML = "";
+
+    if (activeChatListener) { 
+        db.ref('chats/' + docId + '/messages').off();
+        activeChatListener = null; 
+    }
+
+    activeChatListener = db.ref('chats/' + docId + '/messages')
+        .orderByChild('time_now')
+        .on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+            
+            if (data.sender === 'user' && data.status !== 'read') {
+                db.ref('chats/' + docId + '/messages/' + snapshot.key + '/status').set('read');
+            }
+            
+            renderMessage(snapshot.key, data);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+    db.ref('chats/' + docId + '/messages')
+        .on('child_removed', (snapshot) => {
+            removeMessageFromUI(snapshot.key);
+        });
+};
+
+// ==========================================
+// 🔥 RENDER MESSAGE
+// ==========================================
+function removeMessageFromUI(msgId) {
+    const el = document.getElementById('msg-' + msgId);
+    if (el) el.remove();
+}
+
+function renderMessage(msgId, data) {
+    if (!data) return;
+    const msgDiv = document.createElement('div');
+    msgDiv.id = 'msg-' + msgId;
+    const isMe = data.sender === 'admin';
+    msgDiv.classList.add('msg', isMe ? 'sent-by-me' : 'received-by-me');
+
+    if (data.type === 'text') {
+        msgDiv.innerHTML = `<span>${data.message_text}</span>`;
+    } else if (data.type === 'image') {
+        msgDiv.innerHTML = `<img src="${data.file_url}" onclick="openLightbox('${data.file_url}', 'image')">`;
+    } else if (data.type === 'video') {
+        msgDiv.innerHTML = `<video src="${data.file_url}" controls onclick="openLightbox('${data.file_url}', 'video')"></video>`;
+    } else if (data.type === 'audio') {
+        msgDiv.innerHTML = `<audio src="${data.file_url}" controls></audio>`;
+    }
+
+    let tickHtml = '';
+    if (isMe) {
+        if (data.status === 'sent') tickHtml = '<span class="tick sent">✓</span>';
+        else if (data.status === 'delivered') tickHtml = '<span class="tick delivered">✓✓</span>';
+        else if (data.status === 'read') tickHtml = '<span class="tick read">✓✓</span>';
+    }
+
+    const metaDiv = document.createElement('div');
+    metaDiv.classList.add('msg-meta');
+    metaDiv.innerHTML = `<span>${data.time_label || ''}</span> ${tickHtml}`;
+    msgDiv.appendChild(metaDiv);
+    chatBox.appendChild(msgDiv);
+}
+
+// ==========================================
+// 🔥 LIGHTBOX
+// ==========================================
+function openLightbox(url, type) {
+    const lightbox = document.getElementById('mediaLightbox');
+    const content = document.getElementById('mediaLightboxContent');
+    content.innerHTML = '';
+    lightbox.style.display = 'flex';
+    
+    if (type === 'image') {
+        content.innerHTML = `<img src="${url}" style="max-width:100%;max-height:100%;border-radius:6px;">`;
+    } else if (type === 'video') {
+        content.innerHTML = `<video src="${url}" controls autoplay style="max-width:100%;max-height:100%;border-radius:6px;"></video>`;
+    }
+}
+
+document.getElementById('mediaLightboxCloseBtn').addEventListener('click', () => {
+    document.getElementById('mediaLightbox').style.display = 'none';
+});
+
+document.getElementById('mediaLightbox').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        document.getElementById('mediaLightbox').style.display = 'none';
+    }
+});
+
+// ==========================================
+// 🔥 SEND MESSAGE
+// ==========================================
+async function sendMessageToFirebase(type, content) {
+    if (!activeDocId) return;
+    
+    let fileUrl = '';
+    let messageText = content;
+    
+    if (type === 'text') {
+        messageText = content;
+    } else if (type === 'audio') {
+        fileUrl = content;
+        messageText = 'Sent a voice note';
+    } else {
+        const url = await uploadToImgBB(content);
+        if (!url) {
+            alert('Upload failed!');
+            return;
+        }
+        fileUrl = url;
+        messageText = `Sent a ${type}`;
+    }
+    
+    const timestamp = Date.now();
+    const msgData = {
+        sender: 'admin',
+        type: type,
+        message_text: messageText,
+        file_url: fileUrl,
+        time_now: timestamp,
+        time_label: new Date().toLocaleTimeString(),
+        status: 'sent'
+    };
+    
+    await db.ref('chats/' + activeDocId + '/messages').push(msgData);
+    await db.ref('chats/' + activeDocId + '/lastUpdated').set(timestamp);
+    await trimMessages(activeDocId, MAX_MESSAGES_PER_CHAT);
+}
+
+// ==========================================
+// 🔥 EVENT LISTENERS
+// ==========================================
+sendBtn.addEventListener('click', () => {
+    const t = msgInput.value.trim();
+    if (t) {
+        msgInput.value = '';
+        sendMessageToFirebase('text', t);
+    }
+});
+
+msgInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const t = msgInput.value.trim();
+        if (t) {
+            msgInput.value = '';
+            sendMessageToFirebase('text', t);
+        }
+    }
+});
+
+mediaInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 1548576) {
+        alert('File size limit is 1.5MB.');
+        e.target.value = '';
+        return;
+    }
+    const type = file.type.startsWith('image/') ? 'image' : 
+                 file.type.startsWith('video/') ? 'video' : 'audio';
+    
+    if (type === 'audio') {
+        const base64 = await toBase64(file);
+        await sendMessageToFirebase('audio', base64);
+    } else {
+        await sendMessageToFirebase(type, file);
+    }
+    e.target.value = '';
+});
+
+voiceBtn.addEventListener('click', async () => {
+    if (!isRecording) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+            mediaRecorder.onstop = async () => {
+                const blob = new Blob(audioChunks, { type: 'audio/mp3' });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onload = async () => {
+                    await sendMessageToFirebase('audio', reader.result);
+                };
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            voiceBtn.textContent = '🛑';
+            voiceBtn.classList.add('recording');
+        } catch (e) {
+            alert('Microphone access denied');
+        }
+    } else {
+        mediaRecorder.stop();
+        isRecording = false;
+        voiceBtn.textContent = '🎙️';
+        voiceBtn.classList.remove('recording');
+    }
+});
+</script>
+</body>
+</html>
