@@ -2,7 +2,7 @@
 // 🔥 SERVICE WORKER - Teach Hub
 // ==========================================
 
-const CACHE_NAME = 'teachhub-v3';
+const CACHE_NAME = 'teachhub-v4';
 const urlsToCache = [
     '/Teachhub5yy/',
     '/Teachhub5yy/index.html',
@@ -46,14 +46,20 @@ self.addEventListener('activate', (event) => {
 });
 
 // ==========================================
-// 🔥 FETCH EVENT
+// 🔥 FETCH EVENT (network-first, so updates always show right away;
+// falls back to cache only if there's no internet connection)
 // ==========================================
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then((response) => {
-                return response || fetch(event.request);
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseClone);
+                });
+                return response;
             })
+            .catch(() => caches.match(event.request))
     );
 });
 
