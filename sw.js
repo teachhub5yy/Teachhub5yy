@@ -2,7 +2,7 @@
 // 🔥 SERVICE WORKER - Teach Hub
 // ==========================================
 
-const CACHE_NAME = 'teachhub-v2';
+const CACHE_NAME = 'teachhub-v3';
 const urlsToCache = [
     '/Teachhub5yy/',
     '/Teachhub5yy/index.html',
