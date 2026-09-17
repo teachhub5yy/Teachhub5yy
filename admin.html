@@ -27,30 +27,50 @@
         .btn-logout { background: #6b7a85; color: white; }
         .btn-privacy { background: #F4B400; color: #1B4F72; }
         .btn-privacy.off { background: #6b7a85; color: white; }
+        .btn-manage-lists { background: #8e24aa; color: white; }
 
         .user-list { flex: 1; overflow-y: auto; padding: 8px 0; background: #ffffff; }
+
+        .filter-bar { display: flex; gap: 8px; overflow-x: auto; padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #eee; }
+        .filter-bar::-webkit-scrollbar { display: none; }
+        .filter-chip { flex-shrink: 0; padding: 6px 14px; border-radius: 999px; border: 1px solid #cbd5db; font-size: 12.5px; font-weight: 600; white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 6px; background: #fff; color: #45535c; }
+        .filter-chip.active { background: #1B4F72; color: #fff; border-color: #1B4F72; }
+        .filter-chip .chip-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+        .action-sheet-box { background: #fff; border-radius: 14px; padding: 8px; width: 100%; max-width: 300px; overflow: hidden; }
+        .action-sheet-title { font-size: 14px; font-weight: 700; color: #16232e; padding: 12px 14px 6px; }
+        .action-sheet-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; border: none; background: none; font-size: 15px; text-align: left; cursor: pointer; color: #16232e; border-top: 1px solid #f0f0f0; }
+        .action-sheet-btn.danger { color: #c62828; }
+        .action-sheet-btn:active { background: #f5f6f6; }
         .user-item { display: flex; flex-direction: column; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; position: relative; }
         .user-item:hover { background: #f5f6f6; }
         .user-item.selected { background: #e3f2fd; border-left: 4px solid #1B84D8; }
 
         .user-clickable-area { display: flex; align-items: center; gap: 15px; width: 100%; cursor: pointer; }
-        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #1B4F72; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; position: relative; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #dbe4ea; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .online-dot { position: absolute; bottom: -1px; right: -1px; width: 13px; height: 13px; border-radius: 50%; background: #8696a0; border: 2px solid #ffffff; }
         .online-dot.online { background: #43a047; }
         .user-details { flex: 1; min-width: 0; }
         .user-phone { font-size: 15px; font-weight: 600; color: #16232e; }
+        .edit-name-btn { font-size: 12px; cursor: pointer; opacity: 0.5; margin-left: 6px; }
+        .edit-name-btn:hover { opacity: 1; }
         .user-subtitle { font-size: 12px; color: #6b7a85; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .status-container { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e1e1e1; flex-wrap: wrap; }
-        .status-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 12px; color: white; background-color: #8696a0; }
-        .status-tag.pending { background-color: #e53935; }
-        .status-tag.plan1 { background-color: #1e88e5; }
-        .status-tag.plan2 { background-color: #8e24aa; }
-        .status-tag.completed { background-color: #43a047; }
-        .status-tag.custom { background-color: #f4511e; }
+        .status-container { display: flex; align-items: center; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+        .label-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; color: #16232e; }
 
-        .status-selector { font-size: 12px; padding: 3px 6px; border-radius: 4px; border: 1px solid #ccc; outline: none; background: #fff; cursor: pointer; }
-        .remove-status-btn { font-size: 11px; padding: 3px 6px; background: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .label-chooser-box { background: #fff; border-radius: 14px; padding: 20px; width: 100%; max-width: 320px; max-height: 80vh; overflow-y: auto; }
+        .label-chooser-box h3 { font-size: 18px; margin-bottom: 4px; color: #16232e; }
+        .label-chooser-hint { font-size: 11px; color: #8a97a0; margin-bottom: 14px; }
+        .label-new-btn { background: none; border: none; color: #1e88e5; font-weight: 700; font-size: 15px; cursor: pointer; padding: 8px 0; display: flex; align-items: center; gap: 6px; }
+        .label-section-header { font-size: 12px; font-weight: 700; color: #8a97a0; text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 4px; }
+        .label-row { display: flex; align-items: center; gap: 10px; padding: 12px 6px; border-bottom: 1px solid #f0f0f0; cursor: pointer; border-radius: 8px; user-select: none; -webkit-user-select: none; }
+        .label-row:active { background: #f5f6f6; }
+        .label-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+        .label-name { flex: 1; font-size: 15px; color: #16232e; }
+        .label-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; pointer-events: none; }
+        .label-done-btn { width: 100%; margin-top: 16px; padding: 12px; background: #1B4F72; color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; }
         .unread-badge { background-color: #1B84D8; color: white; font-size: 11px; font-weight: bold; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
         .delete-user-btn { font-size: 12px; padding: 4px 10px; background: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
         .delete-user-btn:hover { background: #b71c1c; }
@@ -73,6 +93,13 @@
         .msg img { max-width: 100%; max-height: 200px; border-radius: 6px; display: block; object-fit: contain; cursor: pointer; }
         .msg video { max-width: 100%; max-height: 200px; border-radius: 6px; display: block; cursor: pointer; }
         .msg audio { max-width: 100%; display: block; outline: none; }
+
+        .voice-msg { display: flex; align-items: center; gap: 8px; min-width: 190px; padding: 2px 2px; }
+        .voice-play-btn { width: 32px; height: 32px; border-radius: 50%; background: #1B4F72; color: #fff; border: none; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; flex-shrink: 0; }
+        .voice-progress-track { flex: 1; height: 4px; background: #c7d3da; border-radius: 2px; position: relative; cursor: pointer; }
+        .voice-progress-fill { height: 100%; width: 0%; background: #1B4F72; border-radius: 2px; }
+        .voice-duration { font-size: 11px; color: #6b7a85; min-width: 34px; text-align: right; flex-shrink: 0; }
+        .voice-icon { font-size: 15px; flex-shrink: 0; }
         .msg-meta { align-self: flex-end; display: inline-flex; align-items: center; gap: 3px; font-size: 10px; color: #6b7a85; user-select: none; }
         .msg-delete-btn { cursor: pointer; margin-left: 4px; opacity: 0.6; }
         .msg-delete-btn:hover { opacity: 1; }
@@ -112,6 +139,7 @@
             <span>Teach Hub - Staff Inbox</span>
             <div class="header-actions">
                 <button class="btn-privacy" id="privacyToggleBtn" onclick="togglePrivacy()">👁 Status: ON</button>
+                <button class="btn-manage-lists" onclick="openLabelChooser(null)">🏷 Lists</button>
                 <button class="btn-delete-selected" id="deleteSelectedBtn" disabled onclick="deleteSelectedUsers()">
                     🗑 Delete Selected
                 </button>
@@ -123,6 +151,7 @@
                 </button>
             </div>
         </div>
+        <div class="filter-bar" id="filterBar"></div>
         <div class="user-list" id="userList"></div>
     </div>
 
@@ -145,6 +174,25 @@
             </div>
             <button class="send-btn" id="sendBtn">➤</button>
         </div>
+    </div>
+</div>
+
+<div class="media-lightbox" id="userActionSheetOverlay">
+    <div class="action-sheet-box">
+        <div class="action-sheet-title" id="actionSheetUserName">Student</div>
+        <button class="action-sheet-btn" id="actionSheetListsBtn">🏷 Manage lists</button>
+        <button class="action-sheet-btn danger" id="actionSheetDeleteBtn">🗑 Delete user</button>
+    </div>
+</div>
+
+<div class="media-lightbox" id="labelChooserOverlay">
+    <div class="label-chooser-box">
+        <h3>Choose list</h3>
+        <div class="label-chooser-hint" id="labelChooserHint">Hold a list for 2 seconds to delete it completely</div>
+        <button class="label-new-btn" onclick="createNewLabelPrompt()">➕ New list</button>
+        <div class="label-section-header">Your lists</div>
+        <div id="labelListContainer"></div>
+        <button class="label-done-btn" onclick="closeLabelChooser()">Done</button>
     </div>
 </div>
 
@@ -202,6 +250,77 @@ async function uploadMediaToCloudinary(file) {
     return data.secure_url;
 }
 
+// ==========================================
+// 🔥 FIX: recorded voice notes must never pass through WebM/MediaRecorder,
+// which has a well-known browser bug that corrupts the saved duration.
+// Instead, raw audio samples are captured directly via the Web Audio API
+// as they're recorded, and the WAV file is built from them ourselves -
+// a WAV built this way always has a correct, accurate duration.
+// ==========================================
+let recordCtx, recordSource, recordProcessor, recordedChunks, recordSampleRate, recordStream;
+
+async function startRawRecording() {
+    recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recordCtx = new (window.AudioContext || window.webkitAudioContext)();
+    recordSampleRate = recordCtx.sampleRate;
+    recordSource = recordCtx.createMediaStreamSource(recordStream);
+    recordProcessor = recordCtx.createScriptProcessor(4096, 1, 1);
+    recordedChunks = [];
+
+    recordProcessor.onaudioprocess = (e) => {
+        recordedChunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    };
+
+    const silentGain = recordCtx.createGain();
+    silentGain.gain.value = 0;
+    recordSource.connect(recordProcessor);
+    recordProcessor.connect(silentGain);
+    silentGain.connect(recordCtx.destination);
+}
+
+function stopRawRecording() {
+    recordProcessor.disconnect();
+    recordSource.disconnect();
+    recordStream.getTracks().forEach(t => t.stop());
+
+    let totalLength = 0;
+    for (const chunk of recordedChunks) totalLength += chunk.length;
+    const merged = new Float32Array(totalLength);
+    let offset = 0;
+    for (const chunk of recordedChunks) { merged.set(chunk, offset); offset += chunk.length; }
+
+    recordCtx.close();
+    return encodeWAV(merged, recordSampleRate);
+}
+
+function encodeWAV(samples, sampleRate) {
+    const buffer = new ArrayBuffer(44 + samples.length * 2);
+    const view = new DataView(buffer);
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + samples.length * 2, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, samples.length * 2, true);
+    let offset = 44;
+    for (let i = 0; i < samples.length; i++, offset += 2) {
+        const s = Math.max(-1, Math.min(1, samples[i]));
+        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return new Blob([view], { type: 'audio/wav' });
+}
+
+function writeString(view, offset, string) {
+    for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i));
+}
+
 // Keeps only the latest MAX_MESSAGES_PER_CHAT messages.
 async function trimMessages(chatId, maxCount) {
     try {
@@ -232,7 +351,11 @@ async function checkStaleUsers() {
         for (const [docId, docData] of Object.entries(summaries)) {
             const last = docData.lastUpdated || 0;
             if (now - last > INACTIVITY_LIMIT_MS) {
-                await deleteUserCompletely(docId, getUserFriendlyName(docId));
+                const freshSnap = await db.ref('chatSummary/' + docId + '/lastUpdated').once('value');
+                const freshLast = freshSnap.val() || 0;
+                if (Date.now() - freshLast > INACTIVITY_LIMIT_MS) {
+                    await deleteUserCompletely(docId, getUserFriendlyName(docId));
+                }
             }
         }
     } catch (e) {
@@ -271,6 +394,7 @@ auth.onAuthStateChanged((user) => {
         inboxView.style.display = 'flex';
         loadInbox();
         loadPrivacySetting();
+        loadLabelsGlobal();
         checkStaleUsers();
         setInterval(checkStaleUsers, 15 * 60 * 1000);
     } else {
@@ -300,21 +424,17 @@ let activeDocId = "";
 let mediaRecorder, audioChunks = [], isRecording = false;
 let selectedUsers = new Set();
 let adminTypingTimeout = null;
-let showPresenceToAdmin = true; // whether the admin's own online/typing/recording is shared with students
+let showPresenceToAdmin = true;
 
 // ==========================================
 // 🔥 PRIVACY TOGGLE
-// Lets the admin turn off sharing their own online/typing/recording
-// status with students at any time. When off, nothing about the admin's
-// activity is written anywhere a student could see it.
 // ==========================================
 function loadPrivacySetting() {
     db.ref('adminSettings/showPresence').on('value', (snap) => {
-        showPresenceToAdmin = snap.val() !== false; // default true
+        showPresenceToAdmin = snap.val() !== false;
         privacyToggleBtn.textContent = showPresenceToAdmin ? '👁 Status: ON' : '🙈 Status: OFF';
         privacyToggleBtn.classList.toggle('off', !showPresenceToAdmin);
         if (!showPresenceToAdmin && activeDocId) {
-            // Immediately clear anything currently visible to the student.
             db.ref('chats/' + activeDocId + '/presence/adminOnline').set(false);
             db.ref('chats/' + activeDocId + '/presence/adminTyping').set(false);
             db.ref('chats/' + activeDocId + '/presence/adminRecording').set(false);
@@ -347,7 +467,7 @@ function getUserFriendlyName(docId) {
 }
 
 // ==========================================
-// 🔥 DELETE USER (also wipes their Storage media)
+// 🔥 DELETE USER
 // ==========================================
 async function deleteUserCompletely(docId, userName) {
     try {
@@ -424,30 +544,208 @@ async function deleteSelectedUsers() {
 }
 
 // ==========================================
-// 🔥 STATUS
+// 🔥 CUSTOM LISTS ("labels") - like WhatsApp Business labels.
+// Hold a user for 2 seconds to open the chooser, create as many named,
+// colored lists as you like, tick any number onto that user, or open
+// the chooser from the header ("🏷 Lists") to manage lists on their own -
+// holding a LIST there for 2 seconds deletes it completely everywhere.
 // ==========================================
-async function updateCustomerStatus(docId, newStatus) {
-    try {
-        await db.ref('chats/' + docId + '/statusTag').set(newStatus);
-        await db.ref('chatSummary/' + docId + '/statusTag').set(newStatus);
-    } catch (error) {
-        console.error("Error:", error);
-    }
+let allLabels = {};
+let labelChooserDocId = null; // null when opened from the header (manage-only mode)
+const LABEL_COLOR_PALETTE = ['#29b6d8', '#ffca28', '#fb8c00', '#ec407a', '#f6e27a', '#9e9e9e', '#26a69a', '#5c6bc0'];
+
+function loadLabelsGlobal() {
+    db.ref('labels').on('value', (snap) => {
+        allLabels = snap.val() || {};
+        renderFilterBar();
+        renderInboxList();
+    });
 }
 
-window.handleStatusChange = function(selectElement, docId) {
-    const val = selectElement.value;
-    if (val === 'custom') {
-        const customVal = prompt("Enter Custom Status:");
-        if (customVal && customVal.trim() !== "") updateCustomerStatus(docId, customVal.trim());
-        else selectElement.value = "";
-    } else {
-        updateCustomerStatus(docId, val);
+window.openLabelChooser = function(docId) {
+    labelChooserDocId = docId; // may be null - manage-lists-only mode
+    const hint = document.getElementById('labelChooserHint');
+    hint.textContent = docId
+        ? 'Tick a list to add this user - hold a list for 2 seconds to delete it completely'
+        : 'Hold a list for 2 seconds to delete it completely';
+    renderLabelChooserList();
+    document.getElementById('labelChooserOverlay').style.display = 'flex';
+};
+
+window.closeLabelChooser = function() {
+    document.getElementById('labelChooserOverlay').style.display = 'none';
+    labelChooserDocId = null;
+};
+
+async function renderLabelChooserList() {
+    const container = document.getElementById('labelListContainer');
+    let currentLabels = {};
+    if (labelChooserDocId) {
+        const summarySnap = await db.ref('chatSummary/' + labelChooserDocId + '/labels').once('value');
+        currentLabels = summarySnap.val() || {};
+    }
+    const ids = Object.keys(allLabels);
+    if (ids.length === 0) {
+        container.innerHTML = "<div style='padding:10px 0;color:#888;font-size:13px;'>No lists yet. Tap '➕ New list' to create one.</div>";
+        return;
+    }
+    container.innerHTML = ids.map(id => {
+        const lbl = allLabels[id];
+        const checked = currentLabels[id] ? 'checked' : '';
+        const checkboxHtml = labelChooserDocId
+            ? `<input type="checkbox" ${checked} data-label-id="${id}">`
+            : '';
+        return `<label class="label-row" data-label-id="${id}" data-label-name="${lbl.name}">
+            <span class="label-dot" style="background:${lbl.color}"></span>
+            <span class="label-name">${lbl.name}</span>
+            ${checkboxHtml}
+        </label>`;
+    }).join('');
+
+    // Wire up tap-to-toggle (only meaningful when a user is selected) and
+    // long-press-to-delete-the-whole-list on every row.
+    container.querySelectorAll('.label-row').forEach((row) => {
+        const id = row.dataset.labelId;
+        const name = row.dataset.labelName;
+        const checkbox = row.querySelector('input[type="checkbox"]');
+
+        if (labelChooserDocId) {
+            row.addEventListener('click', (e) => {
+                if (labelRowLongPressFired) { labelRowLongPressFired = false; return; }
+                checkbox.checked = !checkbox.checked;
+                toggleUserLabel(id, checkbox.checked);
+            });
+        }
+        attachLabelLongPress(row, id, name);
+    });
+}
+
+window.toggleUserLabel = function(labelId, checked) {
+    if (!labelChooserDocId) return;
+    db.ref('chatSummary/' + labelChooserDocId + '/labels/' + labelId).set(checked ? true : null);
+};
+
+window.createNewLabelPrompt = async function() {
+    const name = prompt('Name this new list:');
+    if (!name || !name.trim()) return;
+    try {
+        const color = LABEL_COLOR_PALETTE[Object.keys(allLabels).length % LABEL_COLOR_PALETTE.length];
+        const newRef = db.ref('labels').push();
+        await newRef.set({ name: name.trim(), color });
+        if (labelChooserDocId) {
+            await db.ref('chatSummary/' + labelChooserDocId + '/labels/' + newRef.key).set(true);
+        }
+        renderLabelChooserList();
+    } catch (err) {
+        alert('❌ Could not create list: ' + err.message + '\n\nMake sure the "labels" node has permission in your Realtime Database Rules.');
     }
 };
 
-window.removeStatus = function(docId) {
-    if (confirm("Remove status?")) updateCustomerStatus(docId, "");
+// Deleting a list here only removes labels/{id} - any old references left
+// under a chatSummary just point at nothing and are silently ignored by
+// the rendering code, so there's nothing else to clean up.
+async function deleteLabelCompletely(labelId, labelName) {
+    if (!confirm(`Delete the list "${labelName}" completely? This removes it from every user.`)) return;
+    try {
+        await db.ref('labels/' + labelId).remove();
+        renderLabelChooserList();
+    } catch (err) {
+        alert('Could not delete list: ' + err.message);
+    }
+}
+
+// ==========================================
+// 🔥 LONG-PRESS (hold 2 seconds) helpers
+// ==========================================
+let longPressTimer = null;
+let longPressTriggered = false;
+
+function attachLongPress(itemDiv, docId, userName) {
+    const start = () => {
+        longPressTriggered = false;
+        longPressTimer = setTimeout(() => {
+            longPressTriggered = true;
+            openUserActionSheet(docId, userName);
+        }, 2000);
+    };
+    const cancel = () => clearTimeout(longPressTimer);
+
+    itemDiv.addEventListener('touchstart', start, { passive: true });
+    itemDiv.addEventListener('touchend', cancel);
+    itemDiv.addEventListener('touchmove', cancel);
+    itemDiv.addEventListener('touchcancel', cancel);
+    itemDiv.addEventListener('mousedown', start);
+    itemDiv.addEventListener('mouseup', cancel);
+    itemDiv.addEventListener('mouseleave', cancel);
+}
+
+// ==========================================
+// 🔥 USER ACTION SHEET (shown after a 2-second hold)
+// ==========================================
+let actionSheetDocId = null;
+
+function openUserActionSheet(docId, userName) {
+    actionSheetDocId = docId;
+    document.getElementById('actionSheetUserName').textContent = userName;
+    document.getElementById('userActionSheetOverlay').style.display = 'flex';
+}
+
+function closeUserActionSheet() {
+    document.getElementById('userActionSheetOverlay').style.display = 'none';
+    actionSheetDocId = null;
+}
+
+document.getElementById('userActionSheetOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeUserActionSheet();
+});
+
+document.getElementById('actionSheetListsBtn').addEventListener('click', () => {
+    const docId = actionSheetDocId;
+    closeUserActionSheet();
+    openLabelChooser(docId);
+});
+
+document.getElementById('actionSheetDeleteBtn').addEventListener('click', async () => {
+    const docId = actionSheetDocId;
+    const userName = document.getElementById('actionSheetUserName').textContent;
+    closeUserActionSheet();
+    if (!confirm(`Delete "${userName}"?`)) return;
+    await deleteUserCompletely(docId, userName);
+    if (activeDocId === docId) goBackToInbox();
+    alert(`✅ Deleted "${userName}"`);
+});
+
+let labelRowLongPressTimer = null;
+let labelRowLongPressFired = false;
+
+function attachLabelLongPress(rowEl, labelId, labelName) {
+    const start = () => {
+        labelRowLongPressFired = false;
+        labelRowLongPressTimer = setTimeout(() => {
+            labelRowLongPressFired = true;
+            deleteLabelCompletely(labelId, labelName);
+        }, 2000);
+    };
+    const cancel = () => clearTimeout(labelRowLongPressTimer);
+
+    rowEl.addEventListener('touchstart', start, { passive: true });
+    rowEl.addEventListener('touchend', cancel);
+    rowEl.addEventListener('touchmove', cancel);
+    rowEl.addEventListener('touchcancel', cancel);
+    rowEl.addEventListener('mousedown', start);
+    rowEl.addEventListener('mouseup', cancel);
+    rowEl.addEventListener('mouseleave', cancel);
+}
+
+window.renameUser = function(docId, currentName) {
+    const newName = prompt('Rename this student:', currentName);
+    if (!newName || !newName.trim()) return;
+    let savedNames = localStorage.getItem('chatUserNames');
+    savedNames = savedNames ? JSON.parse(savedNames) : {};
+    savedNames[docId] = newName.trim();
+    localStorage.setItem('chatUserNames', JSON.stringify(savedNames));
+    if (activeDocId === docId) chatTitle.innerText = newName.trim();
+    renderInboxList();
 };
 
 window.deleteUser = async function(docId, userName) {
@@ -461,6 +759,9 @@ window.deleteUser = async function(docId, userName) {
 // ==========================================
 // 🔥 LOAD INBOX
 // ==========================================
+let latestChatSummaries = null;
+let currentFilter = 'all';
+
 function loadInbox() {
     inboxView.style.display = 'flex';
     chatView.style.display = 'none';
@@ -475,72 +776,97 @@ function loadInbox() {
     userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>⏳ Loading users...</div>";
 
     db.ref('chatSummary').on('value', (snapshot) => {
-        const chats = snapshot.val();
-
-        if (!chats) {
-            userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>📭 No users yet. Share your link!</div>";
-            return;
-        }
-
-        const sortedChats = Object.entries(chats).sort((a, b) => {
-            return (b[1].lastUpdated || 0) - (a[1].lastUpdated || 0);
-        });
-
-        userListDiv.innerHTML = "";
-
-        for (const [docId, docData] of sortedChats) {
-            const userName = getUserFriendlyName(docId);
-            const activeStatus = docData.statusTag || "";
-
-            let tagClass = "status-tag";
-            if (activeStatus.toLowerCase() === "payment pending") tagClass += " pending";
-            else if (activeStatus.toLowerCase() === "plan 1") tagClass += " plan1";
-            else if (activeStatus.toLowerCase() === "plan 2") tagClass += " plan2";
-            else if (activeStatus.toLowerCase() === "completed") tagClass += " completed";
-            else if (activeStatus !== "") tagClass += " custom";
-
-            const isSelected = selectedUsers.has(docId);
-            const msgCount = docData.msgCount || 0;
-            const unreadCount = docData.unreadCount || 0;
-
-            const itemDiv = document.createElement('div');
-            itemDiv.className = `user-item ${isSelected ? 'selected' : ''}`;
-            itemDiv.id = `user-item-${docId}`;
-
-            itemDiv.innerHTML = `
-                <div style="display:flex;align-items:center;gap:10px;width:100%;">
-                    <input type="checkbox" class="select-checkbox" id="checkbox-${docId}" 
-                           onchange="toggleUserSelection('${docId}', this)" 
-                           ${isSelected ? 'checked' : ''}>
-                    <div class="user-clickable-area" onclick="window.openChat('${docId}', '${userName}')">
-                        <div class="user-avatar">🎓<span class="online-dot ${docData.online ? 'online' : ''}"></span></div>
-                        <div class="user-details">
-                            <div class="user-phone">${userName}</div>
-                            <div class="user-subtitle">${docData.lastMessageText ? docData.lastMessageText : ('ID: ' + docId.substring(0, 12) + '... | Msgs: ' + msgCount)}</div>
-                        </div>
-                        ${unreadCount > 0 ? `<div class="unread-badge">${unreadCount}</div>` : ''}
-                    </div>
-                </div>
-                <div class="status-container">
-                    ${activeStatus ? `<span class="${tagClass}">${activeStatus}</span>` : '<span style="font-size:11px;color:#aaa;">No tag</span>'}
-                    <select class="status-selector" onchange="handleStatusChange(this, '${docId}')" onclick="event.stopPropagation()">
-                        <option value="" disabled selected>Assign status...</option>
-                        <option value="Payment Pending">Payment Pending</option>
-                        <option value="Plan 1">Plan 1</option>
-                        <option value="Plan 2">Plan 2</option>
-                        <option value="Completed">Completed</option>
-                        <option value="custom">✍️ Custom Status...</option>
-                    </select>
-                    ${activeStatus ? `<button class="remove-status-btn" onclick="event.stopPropagation(); removeStatus('${docId}')">✕ Remove</button>` : ''}
-                    <button class="delete-user-btn" onclick="event.stopPropagation(); window.deleteUser('${docId}', '${userName}')">🗑 Delete</button>
-                </div>
-            `;
-            userListDiv.appendChild(itemDiv);
-        }
+        latestChatSummaries = snapshot.val();
+        renderInboxList();
     }, (error) => {
         userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#c62828;'>❌ Error loading users: " + error.code + " - " + error.message + "</div>";
         console.error('loadInbox permission error:', error);
     });
+}
+
+function renderFilterBar() {
+    const bar = document.getElementById('filterBar');
+    const chips = [
+        { id: 'all', label: 'All', dot: null },
+        { id: 'unread', label: 'Unread', dot: null }
+    ];
+    Object.entries(allLabels).forEach(([id, lbl]) => {
+        chips.push({ id: 'label:' + id, label: lbl.name, dot: lbl.color });
+    });
+
+    bar.innerHTML = chips.map(chip => {
+        const active = currentFilter === chip.id ? 'active' : '';
+        const dotHtml = chip.dot ? `<span class="chip-dot" style="background:${chip.dot}"></span>` : '';
+        return `<div class="filter-chip ${active}" onclick="setInboxFilter('${chip.id}')">${dotHtml}${chip.label}</div>`;
+    }).join('');
+}
+
+window.setInboxFilter = function(filterId) {
+    currentFilter = filterId;
+    renderFilterBar();
+    renderInboxList();
+};
+
+function renderInboxList() {
+    const chats = latestChatSummaries;
+
+    if (!chats) {
+        userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>📭 No users yet. Share your link!</div>";
+        return;
+    }
+
+    let entries = Object.entries(chats);
+
+    if (currentFilter === 'unread') {
+        entries = entries.filter(([, d]) => (d.unreadCount || 0) > 0);
+    } else if (currentFilter.startsWith('label:')) {
+        const labelId = currentFilter.slice(6);
+        entries = entries.filter(([, d]) => d.labels && d.labels[labelId]);
+    }
+
+    const sortedChats = entries.sort((a, b) => (b[1].lastUpdated || 0) - (a[1].lastUpdated || 0));
+
+    if (sortedChats.length === 0) {
+        userListDiv.innerHTML = "<div style='padding:20px;text-align:center;color:#6b7a85;'>📭 No users in this list.</div>";
+        return;
+    }
+
+    userListDiv.innerHTML = "";
+
+    for (const [docId, docData] of sortedChats) {
+        const userName = getUserFriendlyName(docId);
+        const isSelected = selectedUsers.has(docId);
+        const msgCount = docData.msgCount || 0;
+        const unreadCount = docData.unreadCount || 0;
+
+        const userLabelIds = docData.labels ? Object.keys(docData.labels).filter(id => docData.labels[id] && allLabels[id]) : [];
+        const labelPillsHtml = userLabelIds.length
+            ? userLabelIds.map(id => `<span class="label-pill" style="background:${allLabels[id].color}">${allLabels[id].name}</span>`).join('')
+            : '';
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = `user-item ${isSelected ? 'selected' : ''}`;
+        itemDiv.id = `user-item-${docId}`;
+
+        itemDiv.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;width:100%;">
+                <input type="checkbox" class="select-checkbox" id="checkbox-${docId}" 
+                       onchange="toggleUserSelection('${docId}', this)" 
+                       ${isSelected ? 'checked' : ''}>
+                <div class="user-clickable-area" onclick="window.openChat('${docId}', '${userName}')">
+                    <div class="user-avatar"><img class="avatar-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=${docId}" alt=""><span class="online-dot ${docData.online ? 'online' : ''}"></span></div>
+                    <div class="user-details">
+                        <div class="user-phone">${userName} <span class="edit-name-btn" onclick="event.stopPropagation(); renameUser('${docId}', '${userName}')">✏️</span></div>
+                        <div class="user-subtitle">${docData.lastMessageText ? docData.lastMessageText : ('ID: ' + docId.substring(0, 12) + '... | Msgs: ' + msgCount)}</div>
+                        ${labelPillsHtml ? `<div class="status-container">${labelPillsHtml}</div>` : ''}
+                    </div>
+                    ${unreadCount > 0 ? `<div class="unread-badge">${unreadCount}</div>` : ''}
+                </div>
+            </div>
+        `;
+        userListDiv.appendChild(itemDiv);
+        attachLongPress(itemDiv, docId, userName);
+    }
 }
 
 // ==========================================
@@ -549,7 +875,7 @@ function loadInbox() {
 window.goBackToInbox = function() { loadInbox(); };
 
 // ==========================================
-// 🔥 DETACH LISTENERS (messages + presence) for a given chat id
+// 🔥 DETACH LISTENERS
 // ==========================================
 function detachChatListeners(docId) {
     if (!docId) return;
@@ -568,6 +894,10 @@ function detachChatListeners(docId) {
 // 🔥 OPEN CHAT
 // ==========================================
 window.openChat = function(docId, userName) {
+    if (longPressTriggered) {
+        longPressTriggered = false;
+        return;
+    }
     const previousDocId = activeDocId;
     if (previousDocId && previousDocId !== docId) {
         detachChatListeners(previousDocId);
@@ -664,6 +994,55 @@ function removeMessageFromUI(msgId) {
     if (el) el.remove();
 }
 
+// ==========================================
+// 🔥 CUSTOM VOICE MESSAGE PLAYER
+// ==========================================
+function formatTime(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return m + ':' + String(s).padStart(2, '0');
+}
+
+function initVoiceMessage(container) {
+    const audioEl = container.querySelector('.voice-audio-el');
+    const playBtn = container.querySelector('.voice-play-btn');
+    const fill = container.querySelector('.voice-progress-fill');
+    const durationEl = container.querySelector('.voice-duration');
+    const track = container.querySelector('.voice-progress-track');
+    if (!audioEl) return;
+
+    audioEl.addEventListener('loadedmetadata', () => {
+        if (isFinite(audioEl.duration)) durationEl.textContent = formatTime(audioEl.duration);
+    });
+    audioEl.addEventListener('timeupdate', () => {
+        if (audioEl.duration) {
+            fill.style.width = (audioEl.currentTime / audioEl.duration * 100) + '%';
+            durationEl.textContent = formatTime(audioEl.duration - audioEl.currentTime);
+        }
+    });
+    audioEl.addEventListener('ended', () => {
+        playBtn.textContent = '▶';
+        fill.style.width = '0%';
+        durationEl.textContent = formatTime(audioEl.duration || 0);
+    });
+    playBtn.addEventListener('click', () => {
+        if (audioEl.paused) {
+            document.querySelectorAll('audio.voice-audio-el').forEach(a => { if (a !== audioEl) a.pause(); });
+            audioEl.play();
+            playBtn.textContent = '⏸';
+        } else {
+            audioEl.pause();
+            playBtn.textContent = '▶';
+        }
+    });
+    track.addEventListener('click', (e) => {
+        const rect = track.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        if (audioEl.duration) audioEl.currentTime = Math.max(0, Math.min(1, ratio)) * audioEl.duration;
+    });
+}
+
 function updateMessageTick(msgId, data) {
     if (!data || data.sender !== 'admin') return;
     const el = document.getElementById('msg-' + msgId);
@@ -693,7 +1072,15 @@ function renderMessage(msgId, data) {
     } else if (data.type === 'video') {
         msgDiv.innerHTML = `<video src="${data.file_url}" controls onclick="openLightbox('${data.file_url}', 'video')"></video>`;
     } else if (data.type === 'audio') {
-        msgDiv.innerHTML = `<audio src="${data.file_url}" controls></audio>`;
+        msgDiv.innerHTML = `
+            <div class="voice-msg">
+                <button class="voice-play-btn" type="button">▶</button>
+                <span class="voice-icon">🎤</span>
+                <div class="voice-progress-track"><div class="voice-progress-fill"></div></div>
+                <span class="voice-duration">0:00</span>
+                <audio class="voice-audio-el" src="${data.file_url}" preload="metadata" style="display:none;"></audio>
+            </div>`;
+        initVoiceMessage(msgDiv);
     }
 
     let tickHtml = '';
@@ -710,9 +1097,6 @@ function renderMessage(msgId, data) {
     chatBox.appendChild(msgDiv);
 }
 
-// Deletes one message from the database - since both the admin panel and
-// the student app listen for real-time removals, it disappears from
-// BOTH screens immediately, not just this one.
 window.deleteMessageForEveryone = function(msgId) {
     if (!activeDocId) return;
     if (!confirm('Delete this message for everyone?')) return;
@@ -832,18 +1216,7 @@ mediaInput.addEventListener('change', async (e) => {
 voiceBtn.addEventListener('click', async () => {
     if (!isRecording) {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-            mediaRecorder.onstop = async () => {
-                const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                if (activeDocId) {
-                    db.ref('chats/' + activeDocId + '/presence/adminRecording').set(false);
-                }
-                await sendMessageToFirebase('audio', blob);
-            };
-            mediaRecorder.start();
+            await startRawRecording();
             isRecording = true;
             voiceBtn.textContent = '🛑';
             voiceBtn.classList.add('recording');
@@ -855,10 +1228,14 @@ voiceBtn.addEventListener('click', async () => {
             alert('Microphone access denied');
         }
     } else {
-        mediaRecorder.stop();
         isRecording = false;
         voiceBtn.textContent = '🎙️';
         voiceBtn.classList.remove('recording');
+        if (activeDocId) {
+            db.ref('chats/' + activeDocId + '/presence/adminRecording').set(false);
+        }
+        const wavBlob = stopRawRecording();
+        await sendMessageToFirebase('audio', wavBlob);
     }
 });
 </script>
